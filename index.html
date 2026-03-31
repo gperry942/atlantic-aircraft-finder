@@ -1,0 +1,2883 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aircraft Finder — Atlantic Aircraft</title>
+<meta name="description" content="Find your perfect aircraft with Atlantic Aircraft's match engine. Tell us your requirements and we'll recommend the right aircraft types for your mission.">
+<meta property="og:title" content="Aircraft Finder — Atlantic Aircraft">
+<meta property="og:description" content="Find your perfect aircraft. Input your requirements and get matched with the right aircraft types for your mission.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Atlantic Aircraft">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+body {
+  min-height: 100dvh;
+  line-height: 1.6;
+  font-family: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--bg);
+  transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+img, svg { display: block; max-width: 100%; }
+button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+input, select, textarea { font: inherit; color: inherit; }
+ul { list-style: none; }
+a { color: inherit; text-decoration: none; }
+
+/* ===== DESIGN TOKENS ===== */
+:root, [data-theme="light"] {
+  --primary: #1e3a5f;
+  --accent: #3b82c4;
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --text: #1a1f2e;
+  --text-muted: #6b7280;
+  --border: #dde1e7;
+  --shadow: 0 4px 12px rgba(30,58,95,0.08);
+  --shadow-lg: 0 12px 32px rgba(30,58,95,0.12);
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --green-border: #bbf7d0;
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --red-border: #fecaca;
+  --accent-light: rgba(59,130,196,0.08);
+  --accent-border: rgba(59,130,196,0.2);
+  --slider-track: #dde1e7;
+  --slider-fill: #3b82c4;
+  --input-bg: #ffffff;
+  --hover-bg: rgba(30,58,95,0.04);
+}
+[data-theme="dark"] {
+  --primary: #1e3a5f;
+  --accent: #5a9fd4;
+  --bg: #0f1219;
+  --surface: #1a1f2e;
+  --text: #e2e5eb;
+  --text-muted: #8b93a5;
+  --border: #2d3548;
+  --shadow: 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.4);
+  --green: #4ade80;
+  --green-bg: rgba(74,222,128,0.1);
+  --green-border: rgba(74,222,128,0.25);
+  --amber: #fbbf24;
+  --amber-bg: rgba(251,191,36,0.1);
+  --amber-border: rgba(251,191,36,0.25);
+  --red: #f87171;
+  --red-bg: rgba(248,113,113,0.1);
+  --red-border: rgba(248,113,113,0.25);
+  --accent-light: rgba(90,159,212,0.1);
+  --accent-border: rgba(90,159,212,0.25);
+  --slider-track: #2d3548;
+  --slider-fill: #5a9fd4;
+  --input-bg: #151a26;
+  --hover-bg: rgba(255,255,255,0.04);
+}
+
+/* ===== TRANSITIONS ===== */
+a, button, [role="button"], input, select, textarea {
+  transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              background 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== LAYOUT ===== */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.logo-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+}
+[data-theme="dark"] .logo-title {
+  color: var(--accent);
+}
+.logo-subtitle {
+  font-weight: 600;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  color: var(--text-muted);
+}
+.theme-toggle:hover {
+  background: var(--hover-bg);
+  color: var(--text);
+}
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 3rem 1.25rem 2rem;
+}
+.hero h1 {
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+[data-theme="dark"] .hero h1 {
+  color: var(--accent);
+}
+.hero p {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto 0.5rem;
+}
+.hero .hero-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--accent-light);
+  border: 1px solid var(--accent-border);
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  margin-top: 0.5rem;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  box-shadow: var(--shadow);
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+.card-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card-title .card-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+/* ===== FORM: RADIO CARDS ===== */
+.radio-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+.radio-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  border: 2px solid var(--border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  text-align: center;
+  background: var(--surface);
+  min-height: 80px;
+}
+.radio-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.radio-card.active {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.radio-card input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.radio-card .rc-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.radio-card .rc-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text);
+}
+.radio-card .rc-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+/* ===== FORM: SEAT CARDS ===== */
+.seat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+.seat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1rem 0.5rem;
+  border: 2px solid var(--border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  text-align: center;
+  background: var(--surface);
+}
+.seat-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.seat-card.active {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.seat-card input {
+  position: absolute; opacity: 0; width: 0; height: 0;
+}
+.seat-icons {
+  display: flex;
+  gap: 0.15rem;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.seat-card .sc-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.seat-card .sc-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ===== FORM: TOGGLES ===== */
+.toggle-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.toggle-btn {
+  position: relative;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border);
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--text);
+}
+.toggle-btn:hover {
+  border-color: var(--accent);
+}
+.toggle-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+}
+.toggle-btn input {
+  position: absolute; opacity: 0; width: 0; height: 0;
+}
+
+/* ===== FORM: SLIDERS ===== */
+.slider-group {
+  margin-bottom: 1.25rem;
+}
+.slider-group:last-child {
+  margin-bottom: 0;
+}
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+.slider-label span {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.slider-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 80px;
+  text-align: right;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--slider-track);
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--surface);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.slider-marks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+.slider-inline-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+.slider-disabled input[type="range"] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+.slider-disabled .slider-value {
+  opacity: 0.35;
+}
+
+/* ===== FORM: SELECT ===== */
+.form-select {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  cursor: pointer;
+}
+.form-select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.form-row {
+  margin-bottom: 1rem;
+}
+.form-row-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+
+/* ===== FORM: CHECKBOX ===== */
+.checkbox-no-pref {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-left: 1rem;
+}
+.checkbox-no-pref input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ===== FORM: CHECKBOX GRID ===== */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+@media (max-width: 600px) {
+  .checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface);
+}
+.checkbox-item:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.checkbox-item.checked {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ===== TOGGLE SWITCH ===== */
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+}
+.switch-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: var(--slider-track);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 200ms;
+}
+.switch.on {
+  background: var(--accent);
+}
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.switch.on::after {
+  transform: translateX(20px);
+}
+
+/* ===== OWNERSHIP SHARE ===== */
+.share-display {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--accent-light);
+  border: 1px solid var(--accent-border);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  display: none;
+}
+
+/* ===== FIND BUTTON ===== */
+.find-section {
+  text-align: center;
+  padding: 1.5rem 0 2.5rem;
+}
+.btn-find {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 2.5rem;
+  background: var(--primary);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(30,58,95,0.25);
+}
+.btn-find:hover {
+  background: #163050;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(30,58,95,0.3);
+}
+.btn-find:active {
+  transform: translateY(0);
+}
+.btn-find svg {
+  width: 20px;
+  height: 20px;
+}
+.find-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+}
+
+/* ===== RESULTS ===== */
+.results-section {
+  display: none;
+  padding-bottom: 3rem;
+}
+.results-section.visible {
+  display: block;
+  animation: fadeSlideUp 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.results-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
+}
+.results-header h2 {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.results-header p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin: 0 auto;
+}
+.results-count {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  background: var(--accent-light);
+  border: 1px solid var(--accent-border);
+  border-radius: 2rem;
+  color: var(--accent);
+}
+
+/* ===== RESULT CARD ===== */
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardAppear 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes cardAppear {
+  to { opacity: 1; transform: translateY(0); }
+}
+.result-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.result-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.result-category {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  border: 1px solid var(--accent-border);
+  padding: 0.15rem 0.6rem;
+  border-radius: 2rem;
+  margin-top: 0.35rem;
+  white-space: nowrap;
+}
+.match-badge {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 2rem;
+  white-space: nowrap;
+}
+.match-green {
+  color: var(--green);
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+}
+.match-amber {
+  color: var(--amber);
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-border);
+}
+.match-red {
+  color: var(--red);
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
+}
+
+/* Specs Row */
+.specs-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--border);
+}
+.spec-item svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.spec-item strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Why it fits / Considerations */
+.fit-section {
+  margin-bottom: 0.75rem;
+}
+.fit-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.fit-title.green { color: var(--green); }
+.fit-title.amber { color: var(--amber); }
+.fit-list {
+  padding-left: 0;
+}
+.fit-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.55;
+  margin-bottom: 0.2rem;
+}
+.fit-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.fit-list.green-list li::before { background: var(--green); }
+.fit-list.amber-list li::before { background: var(--amber); }
+
+/* Learn More */
+.learn-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1.5px solid var(--accent-border);
+  border-radius: 0.5rem;
+  background: transparent;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+.learn-more-btn:hover {
+  background: var(--accent-light);
+}
+.learn-more-btn svg {
+  width: 14px; height: 14px;
+  transition: transform 200ms;
+}
+.learn-more-btn.open svg {
+  transform: rotate(180deg);
+}
+.learn-more-content {
+  display: none;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.learn-more-content.visible {
+  display: block;
+  animation: fadeSlideUp 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.detail-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+.detail-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.broker-tip {
+  padding: 0.85rem 1rem;
+  background: var(--accent-light);
+  border: 1px solid var(--accent-border);
+  border-radius: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.55;
+}
+.broker-tip strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ===== CTA CARD ===== */
+.cta-card {
+  background: var(--primary);
+  color: white;
+  border-radius: 0.875rem;
+  padding: 2.5rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+.cta-card h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.cta-card p {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  max-width: 540px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.6;
+}
+.cta-contact {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.cta-contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+}
+.cta-contact a:hover {
+  background: rgba(255,255,255,0.25);
+}
+.cta-contact svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 1.25rem;
+  text-align: center;
+}
+.footer-brand {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+.footer-location {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* ===== FORM SUBHEADING ===== */
+.form-sub {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-top: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  .header, .hero, .find-section, .footer, .theme-toggle, .learn-more-btn, #questionnaire { display: none !important; }
+  .results-section { display: block !important; }
+  .result-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  .cta-card { background: #1e3a5f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .card { padding: 1.25rem; }
+  .radio-cards { grid-template-columns: repeat(2, 1fr); }
+  .seat-cards { grid-template-columns: repeat(2, 1fr); }
+  .specs-row { gap: 0.35rem; }
+  .spec-item { font-size: 0.72rem; padding: 0.3rem 0.5rem; }
+  .result-card { padding: 1.15rem; }
+  .result-name { font-size: 1.05rem; }
+  .cta-card { padding: 1.5rem; }
+  .details-grid { grid-template-columns: 1fr; }
+  .header-inner { height: 3.25rem; }
+  .logo-title { font-size: 0.85rem; }
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-sep {
+  width: 48px;
+  height: 2px;
+  background: var(--border);
+  margin: 0.5rem auto 0;
+  border-radius: 1px;
+}
+
+/* ===== LOADING STATE ===== */
+.btn-find.loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+.btn-find.loading .btn-text { display: none; }
+.btn-find.loading .btn-loading { display: inline-flex; }
+.btn-loading {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== NO RESULTS ===== */
+.no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+.no-results h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.no-results p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* ===== BACK TO TOP ===== */
+.back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1.5px solid var(--accent-border);
+  border-radius: 0.5rem;
+  background: transparent;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+.back-to-top:hover {
+  background: var(--accent-light);
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <svg class="logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="17" stroke="currentColor" stroke-width="1.5" style="color: var(--accent)"/>
+        <path d="M18 4 L18 32" stroke="currentColor" stroke-width="1" opacity="0.3" style="color: var(--text-muted)"/>
+        <path d="M4 18 L32 18" stroke="currentColor" stroke-width="1" opacity="0.3" style="color: var(--text-muted)"/>
+        <!-- Compass arrow / aircraft shape -->
+        <path d="M18 6 L20.5 16 L27 18 L20.5 20 L18 30 L15.5 20 L9 18 L15.5 16 Z" fill="currentColor" opacity="0.15" style="color: var(--accent)"/>
+        <path d="M18 6 L20.5 16 L27 18 L20.5 20 L18 30 L15.5 20 L9 18 L15.5 16 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" style="color: var(--accent)"/>
+        <!-- N marker -->
+        <text x="18" y="3.5" text-anchor="middle" font-size="3" font-weight="700" fill="currentColor" style="color: var(--text-muted); font-family: 'General Sans', sans-serif;">N</text>
+      </svg>
+      <div class="logo-text">
+        <span class="logo-title">ATLANTIC AIRCRAFT</span>
+        <span class="logo-subtitle">Aircraft Finder</span>
+      </div>
+    </div>
+    <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Find Your Perfect Aircraft</h1>
+  <p>Tell us what you need and we'll match you with the right aircraft types for your mission.</p>
+  <span class="hero-badge">Powered by Atlantic Aircraft — Independent GA Brokerage, Newquay</span>
+</section>
+
+<!-- QUESTIONNAIRE -->
+<main class="container" id="questionnaire">
+
+  <!-- SECTION 1: PRIMARY USE -->
+  <div class="card">
+    <div class="card-title">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L2 8.5l7.5 3L22 2zM22 2l-8.5 19.5-3-7.5L22 2z"/></svg>
+      What will you use it for?
+    </div>
+    <div class="radio-cards" id="primaryUse">
+      <label class="radio-card" data-value="training">
+        <input type="radio" name="primaryUse" value="training">
+        <span class="rc-icon">🎓</span>
+        <span class="rc-label">Training</span>
+        <span class="rc-sub">PPL / Hour Building</span>
+      </label>
+      <label class="radio-card" data-value="weekend">
+        <input type="radio" name="primaryUse" value="weekend">
+        <span class="rc-icon">☀️</span>
+        <span class="rc-label">Weekend Flying</span>
+        <span class="rc-sub">Local Trips</span>
+      </label>
+      <label class="radio-card" data-value="touring_uk">
+        <input type="radio" name="primaryUse" value="touring_uk">
+        <span class="rc-icon">🗺️</span>
+        <span class="rc-label">Touring</span>
+        <span class="rc-sub">UK Cross-Country</span>
+      </label>
+      <label class="radio-card" data-value="touring_europe">
+        <input type="radio" name="primaryUse" value="touring_europe">
+        <span class="rc-icon">🌍</span>
+        <span class="rc-label">Long-Range Touring</span>
+        <span class="rc-sub">UK + European</span>
+      </label>
+      <label class="radio-card" data-value="aerobatics">
+        <input type="radio" name="primaryUse" value="aerobatics">
+        <span class="rc-icon">🔄</span>
+        <span class="rc-label">Aerobatics</span>
+        <span class="rc-sub">&nbsp;</span>
+      </label>
+      <label class="radio-card" data-value="syndicate">
+        <input type="radio" name="primaryUse" value="syndicate">
+        <span class="rc-icon">👥</span>
+        <span class="rc-label">Group / Syndicate</span>
+        <span class="rc-sub">Shared Aircraft</span>
+      </label>
+      <label class="radio-card" data-value="commercial">
+        <input type="radio" name="primaryUse" value="commercial">
+        <span class="rc-icon">🏢</span>
+        <span class="rc-label">Commercial</span>
+        <span class="rc-sub">Flight School / Air Taxi</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PASSENGERS & PAYLOAD -->
+  <div class="card">
+    <div class="card-title">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      How many people?
+    </div>
+    <div class="seat-cards" id="seats">
+      <label class="seat-card" data-value="1">
+        <input type="radio" name="seats" value="1">
+        <div class="seat-icons">👤</div>
+        <span class="sc-label">Just Me</span>
+        <span class="sc-sub">1 seat</span>
+      </label>
+      <label class="seat-card" data-value="2">
+        <input type="radio" name="seats" value="2">
+        <div class="seat-icons">👤👤</div>
+        <span class="sc-label">Me + 1</span>
+        <span class="sc-sub">2 seats</span>
+      </label>
+      <label class="seat-card" data-value="4">
+        <input type="radio" name="seats" value="4">
+        <div class="seat-icons">👤👤👤</div>
+        <span class="sc-label">Me + 2-3</span>
+        <span class="sc-sub">4 seats</span>
+      </label>
+      <label class="seat-card" data-value="6">
+        <input type="radio" name="seats" value="6">
+        <div class="seat-icons">👤👤👤👤</div>
+        <span class="sc-label">Me + 4-5</span>
+        <span class="sc-sub">6 seats</span>
+      </label>
+    </div>
+    <p class="form-sub">Do you need to carry luggage or heavy equipment?</p>
+    <div class="toggle-group" id="payload">
+      <label class="toggle-btn active" data-value="light">
+        <input type="radio" name="payload" value="light" checked>
+        Light bags only
+      </label>
+      <label class="toggle-btn" data-value="touring">
+        <input type="radio" name="payload" value="touring">
+        Full touring luggage
+      </label>
+      <label class="toggle-btn" data-value="heavy">
+        <input type="radio" name="payload" value="heavy">
+        Heavy payload
+      </label>
+    </div>
+  </div>
+
+  <!-- SECTION 3: RANGE & PERFORMANCE -->
+  <div class="card">
+    <div class="card-title">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Range &amp; Performance
+    </div>
+    <div class="slider-group">
+      <div class="slider-label">
+        <span>Minimum Range</span>
+        <span class="slider-value" id="rangeVal">300 nm</span>
+      </div>
+      <input type="range" id="rangeSlider" min="100" max="1000" step="25" value="300">
+      <div class="slider-marks"><span>100 nm</span><span>300 nm</span><span>500 nm</span><span>750 nm</span><span>1000 nm</span></div>
+    </div>
+    <div class="form-row" style="margin-top:1.25rem;">
+      <div class="form-row-label">Runway Requirements</div>
+      <select class="form-select" id="runway">
+        <option value="any">Any runway</option>
+        <option value="short">Short grass strips (under 500m)</option>
+        <option value="standard">Standard grass/tarmac (500–800m)</option>
+        <option value="long">Full-length tarmac only</option>
+      </select>
+    </div>
+    <div class="slider-group" id="speedGroup" style="margin-top:1.25rem;">
+      <div class="slider-label">
+        <span>Cruise Speed Preference
+          <label class="checkbox-no-pref"><input type="checkbox" id="speedNoPref"> Not important</label>
+        </span>
+        <span class="slider-value" id="speedVal">110 kt</span>
+      </div>
+      <input type="range" id="speedSlider" min="80" max="180" step="5" value="110">
+      <div class="slider-marks"><span>80 kt</span><span>110 kt</span><span>140 kt</span><span>180 kt</span></div>
+    </div>
+    <div class="switch-row" style="margin-top:1rem;">
+      <span class="switch-label">IFR Capability Required?</span>
+      <div class="switch" id="ifrSwitch" data-value="no"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: BUDGET -->
+  <div class="card">
+    <div class="card-title">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Your Budget
+    </div>
+    <div class="slider-group">
+      <div class="slider-label">
+        <span>Purchase Budget</span>
+        <span class="slider-value" id="budgetVal">£75,000</span>
+      </div>
+      <input type="range" id="budgetSlider" min="15000" max="250000" step="5000" value="75000">
+      <div class="slider-marks"><span>£15k</span><span>£50k</span><span>£100k</span><span>£150k</span><span>£250k+</span></div>
+    </div>
+    <p class="form-sub">Budget Flexibility</p>
+    <div class="toggle-group" id="budgetFlex">
+      <label class="toggle-btn active" data-value="firm">
+        <input type="radio" name="budgetFlex" value="firm" checked>
+        Firm maximum
+      </label>
+      <label class="toggle-btn" data-value="stretch">
+        <input type="radio" name="budgetFlex" value="stretch">
+        Could stretch 10-15%
+      </label>
+      <label class="toggle-btn" data-value="flexible">
+        <input type="radio" name="budgetFlex" value="flexible">
+        Flexible — show me options
+      </label>
+    </div>
+    <p class="form-sub">Ownership Type</p>
+    <div class="toggle-group" id="ownership">
+      <label class="toggle-btn active" data-value="sole">
+        <input type="radio" name="ownership" value="sole" checked>
+        Sole owner
+      </label>
+      <label class="toggle-btn" data-value="shared">
+        <input type="radio" name="ownership" value="shared">
+        Shared (2 owners)
+      </label>
+      <label class="toggle-btn" data-value="syndicate">
+        <input type="radio" name="ownership" value="syndicate">
+        Syndicate (3-4)
+      </label>
+      <label class="toggle-btn" data-value="exploring">
+        <input type="radio" name="ownership" value="exploring">
+        Just exploring
+      </label>
+    </div>
+    <div class="share-display" id="shareDisplay">Your share of purchase: <span id="shareVal">£37,500</span></div>
+  </div>
+
+  <!-- SECTION 5: RUNNING COSTS -->
+  <div class="card">
+    <div class="card-title">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      Running Cost Limits
+    </div>
+    <div class="slider-group" id="fuelBurnGroup">
+      <div class="slider-label">
+        <span>Max Fuel Burn
+          <label class="checkbox-no-pref"><input type="checkbox" id="fuelNoPref"> No preference</label>
+        </span>
+        <span class="slider-value" id="fuelVal">35 lph</span>
+      </div>
+      <input type="range" id="fuelSlider" min="15" max="80" step="1" value="35">
+      <div class="slider-marks"><span>15 lph</span><span>35 lph</span><span>55 lph</span><span>80 lph</span></div>
+      <div class="slider-inline-note" id="fuelCostNote">≈ £73.50/hr in fuel (at £2.10/litre UK Avgas)</div>
+    </div>
+    <div class="form-row" style="margin-top:1.25rem;">
+      <div class="form-row-label">Max Annual Budget for Running Costs</div>
+      <select class="form-select" id="annualBudget">
+        <option value="5000">Under £5,000</option>
+        <option value="10000">£5,000 – £10,000</option>
+        <option value="15000" selected>£10,000 – £15,000</option>
+        <option value="20000">£15,000 – £20,000</option>
+        <option value="25000">£20,000+</option>
+        <option value="999999">No limit</option>
+      </select>
+    </div>
+    <div class="slider-group" style="margin-top:1.25rem;">
+      <div class="slider-label">
+        <span>Expected Hours Per Year</span>
+        <span class="slider-value" id="hoursVal">100 hrs</span>
+      </div>
+      <input type="range" id="hoursSlider" min="25" max="500" step="25" value="100">
+      <div class="slider-marks"><span>25 hrs</span><span>100 hrs</span><span>250 hrs</span><span>500 hrs</span></div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: MUST-HAVES -->
+  <div class="card">
+    <div class="card-title">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Must-Have Features
+    </div>
+    <div class="checkbox-grid" id="mustHaves">
+      <label class="checkbox-item"><input type="checkbox" value="glass"> Glass cockpit (G1000 or similar)</label>
+      <label class="checkbox-item"><input type="checkbox" value="autopilot"> Autopilot</label>
+      <label class="checkbox-item"><input type="checkbox" value="gps"> GPS with moving map</label>
+      <label class="checkbox-item"><input type="checkbox" value="ifr_avionics"> IFR-certified avionics</label>
+      <label class="checkbox-item"><input type="checkbox" value="retractable"> Retractable undercarriage</label>
+      <label class="checkbox-item"><input type="checkbox" value="csp"> Constant-speed propeller</label>
+      <label class="checkbox-item"><input type="checkbox" value="low_wing"> Low wing</label>
+      <label class="checkbox-item"><input type="checkbox" value="high_wing"> High wing (better visibility)</label>
+      <label class="checkbox-item"><input type="checkbox" value="tricycle"> Tricycle gear (nosewheel)</label>
+      <label class="checkbox-item"><input type="checkbox" value="tailwheel"> Tailwheel / conventional gear</label>
+      <label class="checkbox-item"><input type="checkbox" value="adsb"> ADS-B Out</label>
+      <label class="checkbox-item"><input type="checkbox" value="parts_uk"> Good parts availability in UK</label>
+      <label class="checkbox-item"><input type="checkbox" value="community_uk"> Active UK type community</label>
+    </div>
+  </div>
+
+  <!-- SECTION 7: NICE-TO-HAVES -->
+  <div class="card">
+    <div class="card-title">
+      <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Nice-to-Have Features
+    </div>
+    <div class="checkbox-grid" id="niceToHaves">
+      <label class="checkbox-item"><input type="checkbox" value="composite"> Modern composite airframe</label>
+      <label class="checkbox-item"><input type="checkbox" value="stol"> STOL capability</label>
+      <label class="checkbox-item"><input type="checkbox" value="aerobatic"> Aerobatic capable</label>
+      <label class="checkbox-item"><input type="checkbox" value="grass_friendly"> Good for grass strips</label>
+      <label class="checkbox-item"><input type="checkbox" value="heating"> Cabin heating/ventilation</label>
+      <label class="checkbox-item"><input type="checkbox" value="electric_trim"> Electric trim</label>
+      <label class="checkbox-item"><input type="checkbox" value="recent_paint"> Recent paint/interior likely</label>
+      <label class="checkbox-item"><input type="checkbox" value="resale"> Strong resale value</label>
+      <label class="checkbox-item"><input type="checkbox" value="low_insurance"> Low insurance costs</label>
+      <label class="checkbox-item"><input type="checkbox" value="quiet"> Quiet in the cabin</label>
+    </div>
+  </div>
+
+  <!-- FIND BUTTON -->
+  <div class="find-section">
+    <button class="btn-find" id="findBtn" onclick="findAircraft()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L2 8.5l7.5 3L22 2zM22 2l-8.5 19.5-3-7.5L22 2z"/></svg>
+      <span class="btn-text">Find My Aircraft</span>
+      <span class="btn-loading"><span class="spinner"></span> Matching…</span>
+    </button>
+    <p class="find-note">We'll match your requirements against 25+ aircraft types</p>
+  </div>
+</main>
+
+<!-- RESULTS -->
+<section class="results-section container" id="resultsSection">
+  <div class="results-header" id="resultsHeader"></div>
+  <div id="resultsList"></div>
+
+  <!-- CTA -->
+  <div class="cta-card" id="ctaCard" style="display:none;">
+    <h3>Found something you like?</h3>
+    <p>Atlantic Aircraft can source any of these types across the UK market. We handle viewings, pre-buy inspections, and negotiations — so you get the right aircraft at the right price.</p>
+    <div class="cta-contact">
+      <a href="mailto:info@atlanticaircraft.co.uk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        info@atlanticaircraft.co.uk
+      </a>
+      <a href="tel:+441234567890">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +44 (0) 1234 567 890
+      </a>
+    </div>
+  </div>
+
+  <div style="text-align:center;">
+    <button class="back-to-top" onclick="document.getElementById('questionnaire').scrollIntoView({behavior:'smooth'})">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+      Adjust requirements
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p class="footer-brand">Atlantic Aircraft — Independent Aircraft Brokerage</p>
+  <p class="footer-location">Newquay, Cornwall</p>
+  <div class="footer-links">
+    <a href="#">Ownership Calculator</a>
+    <a href="#">Valuation Model</a>
+  </div>
+</footer>
+
+<script>
+// ===== AIRCRAFT DATABASE =====
+const aircraftDB = [
+  {
+    name: "Cessna 150/152",
+    category: "2-Seat Trainer",
+    seats: 2,
+    rangeNm: 350,
+    cruiseKt: 95,
+    fuelBurnLph: 24,
+    priceMin: 18000,
+    priceMax: 48000,
+    engine: "Lycoming O-235, 110 HP",
+    usefulLoadKg: 200,
+    fuelCapacityL: 98,
+    runwayM: 400,
+    annualCostMin: 6000,
+    annualCostMax: 10000,
+    ukAvailability: "Common",
+    insuranceBand: "Low",
+    wing: "high",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: true,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Moderate",
+    quietCabin: false,
+    primaryUse: ["training", "weekend"],
+    maintenanceNotes: "Very cheap to maintain. Parts everywhere. Simple fixed-gear design.",
+    brokerTip: "The best value entry into aircraft ownership. Perfect for hour building and PPL training. Look for post-2000 152s with recent engine work — they hold value well."
+  },
+  {
+    name: "Piper PA-28-140 Cherokee",
+    category: "4-Seat Utility",
+    seats: 4,
+    rangeNm: 450,
+    cruiseKt: 108,
+    fuelBurnLph: 30,
+    priceMin: 25000,
+    priceMax: 70000,
+    engine: "Lycoming O-320, 140-160 HP",
+    usefulLoadKg: 340,
+    fuelCapacityL: 189,
+    runwayM: 500,
+    annualCostMin: 8000,
+    annualCostMax: 14000,
+    ukAvailability: "Common",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Moderate",
+    quietCabin: false,
+    primaryUse: ["training", "weekend", "touring_uk"],
+    maintenanceNotes: "Affordable and well-understood. 160HP STC models are more capable. Huge parts network.",
+    brokerTip: "The affordable way into 4-seat ownership. Many have been upgraded to 160HP which makes a real difference. Check for corrosion on the wing spar — a known Cherokee issue that's manageable if caught early."
+  },
+  {
+    name: "Piper PA-28-161 Warrior II",
+    category: "4-Seat Trainer/Tourer",
+    seats: 4,
+    rangeNm: 500,
+    cruiseKt: 112,
+    fuelBurnLph: 32,
+    priceMin: 45000,
+    priceMax: 90000,
+    engine: "Lycoming O-320-D3G, 160 HP",
+    usefulLoadKg: 370,
+    fuelCapacityL: 189,
+    runwayM: 490,
+    annualCostMin: 9000,
+    annualCostMax: 15000,
+    ukAvailability: "Common",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["training", "weekend", "touring_uk", "syndicate"],
+    maintenanceNotes: "One of the most popular trainers in the UK. Simple and reliable. Excellent parts and engineer support.",
+    brokerTip: "The UK's most popular training and syndicate aircraft for good reason. Forgiving to fly, cheap to insure, and holds its value. Look for examples with GTN 650 or G5 avionics — they command a premium but buyers love them."
+  },
+  {
+    name: "Piper PA-28-180 Cherokee",
+    category: "4-Seat Tourer",
+    seats: 4,
+    rangeNm: 520,
+    cruiseKt: 117,
+    fuelBurnLph: 34,
+    priceMin: 35000,
+    priceMax: 72000,
+    engine: "Lycoming O-360-A3A, 180 HP",
+    usefulLoadKg: 400,
+    fuelCapacityL: 189,
+    runwayM: 470,
+    annualCostMin: 9000,
+    annualCostMax: 15000,
+    ukAvailability: "Common",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Moderate",
+    quietCabin: false,
+    primaryUse: ["weekend", "touring_uk", "syndicate"],
+    maintenanceNotes: "The 180HP gives genuinely useful 4-seat performance. Same cheap maintenance as all PA-28s.",
+    brokerTip: "The sweet spot for a proper 4-seat tourer on a budget. Unlike the 140/160, the 180 can genuinely carry 4 adults and bags. Great value compared to the Archer II."
+  },
+  {
+    name: "Piper PA-28-181 Archer II/III",
+    category: "4-Seat Tourer",
+    seats: 4,
+    rangeNm: 520,
+    cruiseKt: 120,
+    fuelBurnLph: 36,
+    priceMin: 55000,
+    priceMax: 95000,
+    engine: "Lycoming O-360-A4M, 180 HP",
+    usefulLoadKg: 400,
+    fuelCapacityL: 189,
+    runwayM: 490,
+    annualCostMin: 10000,
+    annualCostMax: 16000,
+    ukAvailability: "Common",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["weekend", "touring_uk", "touring_europe", "syndicate"],
+    maintenanceNotes: "Very similar running costs to the Warrior. Semi-tapered wing gives better cruise performance.",
+    brokerTip: "The refined PA-28. Better climb and cruise than the Warrior with the same running costs. Archer IIIs (1994+) have the updated interior and are worth the premium if budget allows."
+  },
+  {
+    name: "Piper PA-28R Arrow",
+    category: "4-Seat Complex Tourer",
+    seats: 4,
+    rangeNm: 600,
+    cruiseKt: 135,
+    fuelBurnLph: 40,
+    priceMin: 55000,
+    priceMax: 110000,
+    engine: "Lycoming IO-360, 200 HP",
+    usefulLoadKg: 380,
+    fuelCapacityL: 189,
+    runwayM: 470,
+    annualCostMin: 12000,
+    annualCostMax: 20000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Medium",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: false,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: false,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["touring_uk", "touring_europe"],
+    maintenanceNotes: "Retractable gear adds maintenance complexity and cost. Gear inspections are critical. Higher insurance than fixed-gear PA-28s.",
+    brokerTip: "Significantly faster than fixed-gear PA-28s. The retractable gear and constant-speed prop make it a proper cross-country machine. Great for someone stepping up from a Warrior/Archer who wants more speed."
+  },
+  {
+    name: "Cessna 172 Skyhawk",
+    category: "4-Seat Tourer",
+    seats: 4,
+    rangeNm: 500,
+    cruiseKt: 110,
+    fuelBurnLph: 32,
+    priceMin: 48000,
+    priceMax: 95000,
+    engine: "Lycoming O-320-H2AD, 160 HP",
+    usefulLoadKg: 370,
+    fuelCapacityL: 212,
+    runwayM: 450,
+    annualCostMin: 9000,
+    annualCostMax: 15000,
+    ukAvailability: "Common",
+    insuranceBand: "Low",
+    wing: "high",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: true,
+    glassAvailable: true,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["training", "weekend", "touring_uk", "syndicate"],
+    maintenanceNotes: "The world's most popular single. Parts are everywhere. Any engineer can work on it.",
+    brokerTip: "The gold standard for a reason. High wing gives great visibility for sightseeing. Later models (172N, 172P) are the sweet spot for value. 172S models command a premium but come with better avionics."
+  },
+  {
+    name: "Cessna 182 Skylane",
+    category: "4-Seat Performance Tourer",
+    seats: 4,
+    rangeNm: 700,
+    cruiseKt: 130,
+    fuelBurnLph: 45,
+    priceMin: 55000,
+    priceMax: 130000,
+    engine: "Lycoming O-470-U, 230 HP",
+    usefulLoadKg: 470,
+    fuelCapacityL: 303,
+    runwayM: 420,
+    annualCostMin: 12000,
+    annualCostMax: 20000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Medium",
+    wing: "high",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: true,
+    aerobatic: false,
+    composite: false,
+    stolCapable: true,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["touring_uk", "touring_europe", "syndicate"],
+    maintenanceNotes: "Constant-speed prop adds maintenance cost over a 172. Bigger engine burns more fuel. Robust and forgiving.",
+    brokerTip: "The step up from a 172 for serious tourers. Carries 4 adults with full bags and fuel — the 172 struggles with that. Brilliant into short strips thanks to the power. Worth every penny of the premium over a 172 if you actually travel."
+  },
+  {
+    name: "Diamond DA40 Star",
+    category: "4-Seat Modern Tourer",
+    seats: 4,
+    rangeNm: 580,
+    cruiseKt: 130,
+    fuelBurnLph: 30,
+    priceMin: 100000,
+    priceMax: 180000,
+    engine: "Lycoming IO-360-M1A, 180 HP",
+    usefulLoadKg: 370,
+    fuelCapacityL: 148,
+    runwayM: 470,
+    annualCostMin: 10000,
+    annualCostMax: 18000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: true,
+    aerobatic: false,
+    composite: true,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: false,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: true,
+    primaryUse: ["touring_uk", "touring_europe", "training"],
+    maintenanceNotes: "Composite airframe is low maintenance but needs specialist repair if damaged. G1000 panel is standard. Fuel efficient.",
+    brokerTip: "The modern choice. G1000 glass cockpit as standard, excellent fuel efficiency, and the composite airframe is slippery and strong. UK parts can take longer than Cessna/Piper but Diamond's support is improving. Best-in-class safety record."
+  },
+  {
+    name: "Diamond DA42 Twin Star",
+    category: "4-Seat Twin",
+    seats: 4,
+    rangeNm: 700,
+    cruiseKt: 155,
+    fuelBurnLph: 36,
+    priceMin: 160000,
+    priceMax: 250000,
+    engine: "2x Austro AE300 Diesel, 168 HP each",
+    usefulLoadKg: 440,
+    fuelCapacityL: 256,
+    runwayM: 550,
+    annualCostMin: 18000,
+    annualCostMax: 30000,
+    ukAvailability: "Rare",
+    insuranceBand: "High",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: false,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: true,
+    aerobatic: false,
+    composite: true,
+    stolCapable: false,
+    grassStrip: false,
+    partsAvailability: false,
+    ukCommunity: false,
+    resaleStrength: "Strong",
+    quietCabin: true,
+    primaryUse: ["touring_europe", "commercial"],
+    maintenanceNotes: "Diesel engines run on Jet-A1, much cheaper than Avgas. Higher maintenance costs but lower fuel bills. Twin-engine insurance premiums are significant.",
+    brokerTip: "The only light twin that makes economic sense for a private owner. Jet-A1 fuel is half the price of Avgas, and the fuel burn is remarkably low for a twin. Diesel engine maintenance is specialist — make sure you have a nearby approved shop."
+  },
+  {
+    name: "Grumman AA-5 Traveler/Tiger",
+    category: "4-Seat Sport Tourer",
+    seats: 4,
+    rangeNm: 450,
+    cruiseKt: 120,
+    fuelBurnLph: 32,
+    priceMin: 30000,
+    priceMax: 65000,
+    engine: "Lycoming O-320, 150-180 HP",
+    usefulLoadKg: 340,
+    fuelCapacityL: 155,
+    runwayM: 460,
+    annualCostMin: 8000,
+    annualCostMax: 14000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: false,
+    ukCommunity: true,
+    resaleStrength: "Moderate",
+    quietCabin: false,
+    primaryUse: ["weekend", "touring_uk"],
+    maintenanceNotes: "Bonded aluminium construction — specialist repair needed if damaged. Sliding canopy is distinctive. Fast for the horsepower.",
+    brokerTip: "A hidden gem. Faster than a PA-28 or 172 on similar fuel burn thanks to the clean aerodynamics. The sliding canopy and sporty feel make it a joy to fly. The Tiger (180HP) version is the one to have. Parts can take longer to source than Cessna/Piper."
+  },
+  {
+    name: "Robin DR400",
+    category: "4-Seat Tourer",
+    seats: 4,
+    rangeNm: 550,
+    cruiseKt: 120,
+    fuelBurnLph: 34,
+    priceMin: 40000,
+    priceMax: 80000,
+    engine: "Lycoming O-360, 180 HP",
+    usefulLoadKg: 390,
+    fuelCapacityL: 170,
+    runwayM: 400,
+    annualCostMin: 9000,
+    annualCostMax: 15000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: true,
+    grassStrip: true,
+    partsAvailability: false,
+    ukCommunity: true,
+    resaleStrength: "Moderate",
+    quietCabin: false,
+    primaryUse: ["weekend", "touring_uk", "syndicate"],
+    maintenanceNotes: "Wood-and-fabric wing construction is unusual — needs specialist inspection. French-built, so some parts come from France. Wonderful handling.",
+    brokerTip: "A French classic loved by UK clubs. The cranked wing gives outstanding short-field performance and the bubble canopy means incredible visibility. The 180HP Regent is the most popular model. Make sure the wing structure inspection is up to date."
+  },
+  {
+    name: "Socata TB10 Tobago",
+    category: "4-Seat Tourer",
+    seats: 4,
+    rangeNm: 560,
+    cruiseKt: 118,
+    fuelBurnLph: 34,
+    priceMin: 40000,
+    priceMax: 75000,
+    engine: "Lycoming O-360-A1AD, 180 HP",
+    usefulLoadKg: 400,
+    fuelCapacityL: 200,
+    runwayM: 490,
+    annualCostMin: 9000,
+    annualCostMax: 15000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: false,
+    ukCommunity: true,
+    resaleStrength: "Moderate",
+    quietCabin: true,
+    primaryUse: ["touring_uk", "touring_europe"],
+    maintenanceNotes: "French-built. Well-engineered but parts come from Daher in France. Spacious cabin for the class.",
+    brokerTip: "One of the most comfortable 4-seaters in the class — the cabin is wider than a PA-28 and very quiet. The TB20 Trinidad (retractable, 250HP) is the step-up model for serious tourers. Undervalued in the UK market."
+  },
+  {
+    name: "Socata TB20 Trinidad",
+    category: "4-Seat Performance Tourer",
+    seats: 4,
+    rangeNm: 700,
+    cruiseKt: 145,
+    fuelBurnLph: 42,
+    priceMin: 65000,
+    priceMax: 120000,
+    engine: "Lycoming IO-540, 250 HP",
+    usefulLoadKg: 430,
+    fuelCapacityL: 322,
+    runwayM: 490,
+    annualCostMin: 14000,
+    annualCostMax: 22000,
+    ukAvailability: "Rare",
+    insuranceBand: "Medium",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: false,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: false,
+    partsAvailability: false,
+    ukCommunity: true,
+    resaleStrength: "Moderate",
+    quietCabin: true,
+    primaryUse: ["touring_uk", "touring_europe"],
+    maintenanceNotes: "Complex aircraft — retractable gear plus constant-speed prop. Higher insurance. Needs specialist Socata knowledge.",
+    brokerTip: "A genuine 140+ knot cruiser with a huge cabin. Often compared to the Mooney and Bonanza but more spacious inside. Rare in the UK which can make parts slower, but the Socata/TB community is tight-knit and helpful."
+  },
+  {
+    name: "Cessna 150 Aerobat",
+    category: "2-Seat Aerobatic Trainer",
+    seats: 2,
+    rangeNm: 300,
+    cruiseKt: 92,
+    fuelBurnLph: 22,
+    priceMin: 22000,
+    priceMax: 50000,
+    engine: "Lycoming O-235, 110 HP",
+    usefulLoadKg: 190,
+    fuelCapacityL: 98,
+    runwayM: 400,
+    annualCostMin: 6000,
+    annualCostMax: 10000,
+    ukAvailability: "Rare",
+    insuranceBand: "Medium",
+    wing: "high",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: false,
+    aerobatic: true,
+    composite: false,
+    stolCapable: true,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["training", "aerobatics"],
+    maintenanceNotes: "Same as standard 150/152 but with aerobatic harnesses and stronger structure. Check for aerobatic fatigue history.",
+    brokerTip: "If you want aerobatics on a budget, this is the entry point. Limited to basic positive-G manoeuvres but perfect for learning spins, loops, and rolls. Very affordable to run."
+  },
+  {
+    name: "Piper PA-38 Tomahawk",
+    category: "2-Seat Trainer",
+    seats: 2,
+    rangeNm: 350,
+    cruiseKt: 96,
+    fuelBurnLph: 24,
+    priceMin: 15000,
+    priceMax: 35000,
+    engine: "Lycoming O-235-L2C, 112 HP",
+    usefulLoadKg: 210,
+    fuelCapacityL: 121,
+    runwayM: 430,
+    annualCostMin: 6000,
+    annualCostMax: 10000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Moderate",
+    quietCabin: false,
+    primaryUse: ["training", "weekend"],
+    maintenanceNotes: "Very simple and cheap to maintain. Good trainer characteristics. T-tail design is distinctive.",
+    brokerTip: "The cheapest way to own a light aircraft in the UK. Basic but honest. The T-tail means it handles differently in crosswinds — some love it, some don't. Great for hour building and PPL maintenance."
+  },
+  {
+    name: "Beagle Pup",
+    category: "2/4-Seat Heritage",
+    seats: 4,
+    rangeNm: 400,
+    cruiseKt: 105,
+    fuelBurnLph: 30,
+    priceMin: 35000,
+    priceMax: 70000,
+    engine: "Lycoming O-320, 150 HP",
+    usefulLoadKg: 300,
+    fuelCapacityL: 150,
+    runwayM: 450,
+    annualCostMin: 9000,
+    annualCostMax: 15000,
+    ukAvailability: "Rare",
+    insuranceBand: "Medium",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: false,
+    aerobatic: true,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: false,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["weekend", "aerobatics"],
+    maintenanceNotes: "British-built classic. Parts are specialist but the Beagle Pup Club is excellent. Beautiful aircraft to fly.",
+    brokerTip: "A piece of British aviation heritage that's also a genuinely lovely aircraft to fly. The Pup 150 is mildly aerobatic. Values have been climbing steadily — they're becoming collector's items while still being practical weekend flyers."
+  },
+  {
+    name: "Mooney M20J",
+    category: "4-Seat Fast Tourer",
+    seats: 4,
+    rangeNm: 750,
+    cruiseKt: 155,
+    fuelBurnLph: 38,
+    priceMin: 70000,
+    priceMax: 140000,
+    engine: "Lycoming IO-360, 200 HP",
+    usefulLoadKg: 350,
+    fuelCapacityL: 242,
+    runwayM: 500,
+    annualCostMin: 14000,
+    annualCostMax: 22000,
+    ukAvailability: "Rare",
+    insuranceBand: "Medium",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: false,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: false,
+    partsAvailability: false,
+    ukCommunity: false,
+    resaleStrength: "Strong",
+    quietCabin: true,
+    primaryUse: ["touring_uk", "touring_europe"],
+    maintenanceNotes: "Complex aircraft. Manual gear operation is unique to Mooney. Specialist maintenance advisable. Very efficient for the speed.",
+    brokerTip: "The fastest single you can buy for 200HP. Mooneys are slippery, efficient, and make 150+ knots look easy. The cabin is tight though — not ideal if you're tall. UK support is limited so factor in specialist maintenance travel."
+  },
+  {
+    name: "Cirrus SR20",
+    category: "4-Seat Modern Tourer",
+    seats: 4,
+    rangeNm: 600,
+    cruiseKt: 140,
+    fuelBurnLph: 38,
+    priceMin: 120000,
+    priceMax: 200000,
+    engine: "Continental IO-360-ES, 200 HP",
+    usefulLoadKg: 370,
+    fuelCapacityL: 227,
+    runwayM: 550,
+    annualCostMin: 14000,
+    annualCostMax: 22000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Medium",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: true,
+    aerobatic: false,
+    composite: true,
+    stolCapable: false,
+    grassStrip: false,
+    partsAvailability: false,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: true,
+    primaryUse: ["touring_uk", "touring_europe"],
+    maintenanceNotes: "Composite airframe — specialist repair only. CAPS parachute needs periodic repacking (expensive). Avidyne or Garmin Perspective glass cockpit.",
+    brokerTip: "The aircraft that modernised GA. The CAPS whole-airframe parachute is a genuine safety differentiator. Glass cockpit as standard. Not suitable for grass strips due to the fixed gear design and composite construction. Premium pricing but strong resale."
+  },
+  {
+    name: "Cirrus SR22",
+    category: "4-Seat High-Performance Tourer",
+    seats: 4,
+    rangeNm: 800,
+    cruiseKt: 165,
+    fuelBurnLph: 50,
+    priceMin: 160000,
+    priceMax: 250000,
+    engine: "Continental IO-550-N, 310 HP",
+    usefulLoadKg: 430,
+    fuelCapacityL: 340,
+    runwayM: 600,
+    annualCostMin: 18000,
+    annualCostMax: 28000,
+    ukAvailability: "Moderate",
+    insuranceBand: "High",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: true,
+    aerobatic: false,
+    composite: true,
+    stolCapable: false,
+    grassStrip: false,
+    partsAvailability: false,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: true,
+    primaryUse: ["touring_europe", "commercial"],
+    maintenanceNotes: "Higher engine and airframe costs than SR20. CAPS repack is c. £15k every 10 years. Continental IO-550 is a strong but thirsty engine.",
+    brokerTip: "The best-selling piston single in the world for a reason. 165 knots, CAPS parachute, full glass cockpit — it's the closest thing to an airliner experience in a piston single. Budget carefully for running costs though — this is not a cheap aircraft to operate."
+  },
+  {
+    name: "Cessna 177 Cardinal",
+    category: "4-Seat Tourer",
+    seats: 4,
+    rangeNm: 530,
+    cruiseKt: 122,
+    fuelBurnLph: 34,
+    priceMin: 40000,
+    priceMax: 80000,
+    engine: "Lycoming O-360-A1F6, 180 HP",
+    usefulLoadKg: 380,
+    fuelCapacityL: 189,
+    runwayM: 470,
+    annualCostMin: 9000,
+    annualCostMax: 15000,
+    ukAvailability: "Rare",
+    insuranceBand: "Low",
+    wing: "high",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: true,
+    primaryUse: ["touring_uk", "weekend"],
+    maintenanceNotes: "Essentially a more refined 172. No wing struts means better visibility. Cantilever wing design is clean.",
+    brokerTip: "The 'better 172' that Cessna built. No wing struts means stunning visibility from both seats. Wider cabin than the 172. A bit of a cult following which keeps values strong. The 177RG retractable version is faster but more complex."
+  },
+  {
+    name: "Beechcraft Musketeer/Sundowner",
+    category: "4-Seat Tourer",
+    seats: 4,
+    rangeNm: 480,
+    cruiseKt: 115,
+    fuelBurnLph: 34,
+    priceMin: 35000,
+    priceMax: 70000,
+    engine: "Lycoming O-360-A4K, 180 HP",
+    usefulLoadKg: 380,
+    fuelCapacityL: 227,
+    runwayM: 490,
+    annualCostMin: 9000,
+    annualCostMax: 15000,
+    ukAvailability: "Rare",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: false,
+    ukCommunity: false,
+    resaleStrength: "Moderate",
+    quietCabin: false,
+    primaryUse: ["weekend", "touring_uk"],
+    maintenanceNotes: "Well-built Beechcraft quality. Parts are pricier than Cessna/Piper. Not as many UK engineers familiar with the type.",
+    brokerTip: "Beechcraft build quality in a PA-28 price bracket. The Sundowner (C23) is the most common and capable variant. Often overlooked in favour of Pipers and Cessnas, which means you can find good value. Make sure you have a Beech-familiar engineer nearby."
+  },
+  {
+    name: "Piper PA-32 Cherokee Six / Saratoga",
+    category: "6-Seat Tourer",
+    seats: 6,
+    rangeNm: 650,
+    cruiseKt: 130,
+    fuelBurnLph: 50,
+    priceMin: 80000,
+    priceMax: 160000,
+    engine: "Lycoming IO-540, 260-300 HP",
+    usefulLoadKg: 550,
+    fuelCapacityL: 340,
+    runwayM: 520,
+    annualCostMin: 15000,
+    annualCostMax: 25000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Medium",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: false,
+    aerobatic: false,
+    composite: false,
+    stolCapable: false,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["touring_uk", "touring_europe", "syndicate"],
+    maintenanceNotes: "Big engine means higher maintenance and fuel costs. Very capable load carrier. Constant-speed prop standard.",
+    brokerTip: "The workhorse of GA. If you regularly fly with 4+ people and bags, nothing else at this price carries the load. The fixed-gear Cherokee Six is simpler and cheaper than the retractable Saratoga. Excellent syndicate aircraft — split costs 3-4 ways and it becomes very affordable per head."
+  },
+  {
+    name: "Tecnam P2002 Sierra",
+    category: "2-Seat Ultralight/LSA",
+    seats: 2,
+    rangeNm: 400,
+    cruiseKt: 105,
+    fuelBurnLph: 18,
+    priceMin: 30000,
+    priceMax: 65000,
+    engine: "Rotax 912ULS, 100 HP",
+    usefulLoadKg: 220,
+    fuelCapacityL: 100,
+    runwayM: 300,
+    annualCostMin: 5000,
+    annualCostMax: 9000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Low",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: true,
+    ifrCapable: false,
+    glassAvailable: true,
+    aerobatic: false,
+    composite: true,
+    stolCapable: true,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: true,
+    primaryUse: ["training", "weekend"],
+    maintenanceNotes: "Rotax engine is very different from Lycomings — needs Rotax-trained engineer. Very low fuel burn. Modern and simple.",
+    brokerTip: "The modern way to fly cheaply. Rotax engine sips fuel at 18 litres/hour. Can operate as a microlight or EASA aircraft depending on registration. Perfect for someone who wants modern, efficient flying without the costs of a traditional 4-seater."
+  },
+  {
+    name: "Vans RV-7/RV-9",
+    category: "2-Seat Sport/Touring Kit",
+    seats: 2,
+    rangeNm: 600,
+    cruiseKt: 150,
+    fuelBurnLph: 28,
+    priceMin: 45000,
+    priceMax: 100000,
+    engine: "Lycoming IO-360, 180 HP",
+    usefulLoadKg: 260,
+    fuelCapacityL: 155,
+    runwayM: 400,
+    annualCostMin: 8000,
+    annualCostMax: 14000,
+    ukAvailability: "Moderate",
+    insuranceBand: "Medium",
+    wing: "low",
+    gear: "tricycle",
+    fixedGear: true,
+    fixedPitch: false,
+    ifrCapable: true,
+    glassAvailable: true,
+    aerobatic: true,
+    composite: false,
+    stolCapable: true,
+    grassStrip: true,
+    partsAvailability: true,
+    ukCommunity: true,
+    resaleStrength: "Strong",
+    quietCabin: false,
+    primaryUse: ["weekend", "touring_uk", "touring_europe", "aerobatics"],
+    maintenanceNotes: "Kit-built (Permit to Fly, not C of A). Owner maintenance allowed. Very efficient and fast. Aluminium construction.",
+    brokerTip: "The performance bargain of GA. 150 knots on 28 litres/hour is extraordinary value. These are kit-built so quality varies — a thorough inspection is essential. The RV-7 is aerobatic, the RV-9 is the stable touring version. Operate on a Permit to Fly so can't be used commercially."
+  }
+];
+
+// ===== FORM INTERACTION LOGIC =====
+(function() {
+  // Theme toggle
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const html = document.documentElement;
+  let theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  html.setAttribute('data-theme', theme);
+  updateToggleIcon();
+
+  toggle.addEventListener('click', () => {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', theme);
+    updateToggleIcon();
+  });
+
+  function updateToggleIcon() {
+    toggle.innerHTML = theme === 'dark'
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    toggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+  }
+
+  // Radio cards
+  document.querySelectorAll('.radio-cards').forEach(group => {
+    group.querySelectorAll('.radio-card').forEach(card => {
+      card.addEventListener('click', () => {
+        group.querySelectorAll('.radio-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        card.querySelector('input').checked = true;
+      });
+    });
+  });
+
+  // Seat cards
+  document.querySelectorAll('.seat-cards').forEach(group => {
+    group.querySelectorAll('.seat-card').forEach(card => {
+      card.addEventListener('click', () => {
+        group.querySelectorAll('.seat-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        card.querySelector('input').checked = true;
+      });
+    });
+  });
+
+  // Toggle button groups
+  document.querySelectorAll('.toggle-group').forEach(group => {
+    group.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        btn.querySelector('input').checked = true;
+        // Update share display if ownership
+        if (group.id === 'ownership') updateShareDisplay();
+      });
+    });
+  });
+
+  // Switches
+  document.querySelectorAll('.switch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      const isOn = sw.classList.toggle('on');
+      sw.dataset.value = isOn ? 'yes' : 'no';
+    });
+  });
+
+  // Sliders
+  const rangeSlider = document.getElementById('rangeSlider');
+  const rangeVal = document.getElementById('rangeVal');
+  rangeSlider.addEventListener('input', () => { rangeVal.textContent = rangeSlider.value + ' nm'; });
+
+  const speedSlider = document.getElementById('speedSlider');
+  const speedVal = document.getElementById('speedVal');
+  const speedNoPref = document.getElementById('speedNoPref');
+  speedSlider.addEventListener('input', () => { speedVal.textContent = speedSlider.value + ' kt'; });
+  speedNoPref.addEventListener('change', () => {
+    document.getElementById('speedGroup').classList.toggle('slider-disabled', speedNoPref.checked);
+  });
+
+  const budgetSlider = document.getElementById('budgetSlider');
+  const budgetVal = document.getElementById('budgetVal');
+  budgetSlider.addEventListener('input', () => {
+    budgetVal.textContent = '£' + Number(budgetSlider.value).toLocaleString();
+    updateShareDisplay();
+  });
+
+  const fuelSlider = document.getElementById('fuelSlider');
+  const fuelVal = document.getElementById('fuelVal');
+  const fuelCostNote = document.getElementById('fuelCostNote');
+  const fuelNoPref = document.getElementById('fuelNoPref');
+  fuelSlider.addEventListener('input', () => {
+    fuelVal.textContent = fuelSlider.value + ' lph';
+    fuelCostNote.textContent = '≈ £' + (fuelSlider.value * 2.10).toFixed(2) + '/hr in fuel (at £2.10/litre UK Avgas)';
+  });
+  fuelNoPref.addEventListener('change', () => {
+    document.getElementById('fuelBurnGroup').classList.toggle('slider-disabled', fuelNoPref.checked);
+  });
+
+  const hoursSlider = document.getElementById('hoursSlider');
+  const hoursVal = document.getElementById('hoursVal');
+  hoursSlider.addEventListener('input', () => { hoursVal.textContent = hoursSlider.value + ' hrs'; });
+
+  // Checkbox items
+  document.querySelectorAll('.checkbox-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      const cb = item.querySelector('input[type="checkbox"]');
+      cb.checked = !cb.checked;
+      item.classList.toggle('checked', cb.checked);
+    });
+    item.querySelector('input').addEventListener('change', (e) => {
+      item.classList.toggle('checked', e.target.checked);
+    });
+  });
+
+  // Share display
+  function updateShareDisplay() {
+    const budget = parseInt(budgetSlider.value);
+    const activeOwnership = document.querySelector('#ownership .toggle-btn.active');
+    const ownerVal = activeOwnership ? activeOwnership.dataset.value : 'sole';
+    const shareEl = document.getElementById('shareDisplay');
+    const shareValEl = document.getElementById('shareVal');
+    if (ownerVal === 'shared') {
+      shareEl.style.display = 'block';
+      shareValEl.textContent = '£' + Math.round(budget / 2).toLocaleString();
+    } else if (ownerVal === 'syndicate') {
+      shareEl.style.display = 'block';
+      shareValEl.textContent = '£' + Math.round(budget / 3.5).toLocaleString() + ' – £' + Math.round(budget / 3).toLocaleString();
+    } else {
+      shareEl.style.display = 'none';
+    }
+  }
+})();
+
+// ===== MATCHING ENGINE =====
+function findAircraft() {
+  const btn = document.getElementById('findBtn');
+  btn.classList.add('loading');
+
+  // Collect inputs
+  const primaryUseEl = document.querySelector('#primaryUse .radio-card.active');
+  const primaryUse = primaryUseEl ? primaryUseEl.dataset.value : null;
+
+  const seatsEl = document.querySelector('#seats .seat-card.active');
+  const seatsNeeded = seatsEl ? parseInt(seatsEl.dataset.value) : 2;
+
+  const payloadEl = document.querySelector('#payload .toggle-btn.active');
+  const payload = payloadEl ? payloadEl.dataset.value : 'light';
+
+  const minRange = parseInt(document.getElementById('rangeSlider').value);
+  const runway = document.getElementById('runway').value;
+  const speedNoPref = document.getElementById('speedNoPref').checked;
+  const minSpeed = speedNoPref ? 0 : parseInt(document.getElementById('speedSlider').value);
+  const ifrRequired = document.getElementById('ifrSwitch').dataset.value === 'yes';
+
+  const budget = parseInt(document.getElementById('budgetSlider').value);
+  const budgetFlexEl = document.querySelector('#budgetFlex .toggle-btn.active');
+  const budgetFlex = budgetFlexEl ? budgetFlexEl.dataset.value : 'firm';
+  const ownershipEl = document.querySelector('#ownership .toggle-btn.active');
+  const ownership = ownershipEl ? ownershipEl.dataset.value : 'sole';
+
+  const fuelNoPref = document.getElementById('fuelNoPref').checked;
+  const maxFuelBurn = fuelNoPref ? 999 : parseInt(document.getElementById('fuelSlider').value);
+  const annualBudget = parseInt(document.getElementById('annualBudget').value);
+
+  // Effective budget
+  let effectiveBudget = budget;
+  if (budgetFlex === 'stretch') effectiveBudget = Math.round(budget * 1.15);
+  else if (budgetFlex === 'flexible') effectiveBudget = Math.round(budget * 1.5);
+
+  // Must-haves & nice-to-haves
+  const mustHaves = [];
+  document.querySelectorAll('#mustHaves input:checked').forEach(cb => mustHaves.push(cb.value));
+  const niceToHaves = [];
+  document.querySelectorAll('#niceToHaves input:checked').forEach(cb => niceToHaves.push(cb.value));
+
+  // Score aircraft
+  setTimeout(() => {
+    const results = [];
+
+    aircraftDB.forEach(ac => {
+      let score = 0;
+      let maxScore = 100;
+      const whyFits = [];
+      const considerations = [];
+      let hardFail = false;
+
+      // ===== HARD FILTERS =====
+      // Seats
+      if (ac.seats < seatsNeeded) { hardFail = true; }
+      // IFR
+      if (ifrRequired && !ac.ifrCapable) { hardFail = true; }
+      // Budget — only hard fail if firm and priceMin > effectiveBudget
+      if (budgetFlex === 'firm' && ac.priceMin > effectiveBudget) { hardFail = true; }
+
+      if (hardFail) return;
+
+      // ===== PRIMARY USE (+20) =====
+      if (primaryUse && ac.primaryUse.includes(primaryUse)) {
+        score += 20;
+        const useLabels = {
+          training: 'training and hour building',
+          weekend: 'weekend flying',
+          touring_uk: 'UK touring',
+          touring_europe: 'long-range European touring',
+          aerobatics: 'aerobatics',
+          syndicate: 'syndicate/group ownership',
+          commercial: 'commercial operations'
+        };
+        whyFits.push('Well-suited for ' + (useLabels[primaryUse] || primaryUse));
+      } else if (primaryUse) {
+        score += 5; // partial
+      } else {
+        score += 10; // no preference
+      }
+
+      // ===== SEATS (+15) =====
+      if (ac.seats === seatsNeeded) {
+        score += 15;
+      } else if (ac.seats > seatsNeeded) {
+        score += 10;
+        if (ac.seats >= seatsNeeded + 2) {
+          whyFits.push('Extra seating capacity — room to grow');
+        }
+      }
+
+      // ===== BUDGET (+15) =====
+      if (ac.priceMin <= budget && ac.priceMax <= effectiveBudget) {
+        score += 15;
+        whyFits.push('Comfortably within your £' + Number(budget).toLocaleString() + ' budget');
+      } else if (ac.priceMin <= effectiveBudget) {
+        score += 10;
+        if (ac.priceMin > budget) {
+          considerations.push('Starting prices may stretch your stated budget — good examples start around £' + Number(ac.priceMin).toLocaleString());
+        }
+      } else if (budgetFlex === 'flexible' && ac.priceMin <= effectiveBudget) {
+        score += 5;
+        considerations.push('At the upper end of even a flexible budget');
+      } else {
+        score -= 10;
+        considerations.push('Typically priced above your budget range (from £' + Number(ac.priceMin).toLocaleString() + ')');
+      }
+
+      // ===== RANGE (+10) =====
+      if (ac.rangeNm >= minRange) {
+        score += 10;
+        if (ac.rangeNm >= minRange * 1.3) {
+          whyFits.push(ac.rangeNm + ' nm range — comfortably exceeds your ' + minRange + ' nm minimum');
+        }
+      } else {
+        const deficit = minRange - ac.rangeNm;
+        if (deficit <= 50) {
+          score += 5;
+          considerations.push('Range of ' + ac.rangeNm + ' nm is close to but slightly below your ' + minRange + ' nm target');
+        } else {
+          score -= 3;
+          considerations.push('Range of ' + ac.rangeNm + ' nm falls short of your ' + minRange + ' nm requirement');
+        }
+      }
+
+      // ===== FUEL BURN (+10) =====
+      if (!fuelNoPref) {
+        if (ac.fuelBurnLph <= maxFuelBurn) {
+          score += 10;
+          if (ac.fuelBurnLph <= maxFuelBurn * 0.7) {
+            whyFits.push('Very economical at ' + ac.fuelBurnLph + ' litres/hour (≈ £' + (ac.fuelBurnLph * 2.10).toFixed(0) + '/hr fuel)');
+          }
+        } else {
+          const over = ac.fuelBurnLph - maxFuelBurn;
+          if (over <= 10) {
+            score += 3;
+            considerations.push('Fuel burn of ' + ac.fuelBurnLph + ' lph slightly exceeds your ' + maxFuelBurn + ' lph preference');
+          } else {
+            score -= 5;
+            considerations.push('Fuel burn of ' + ac.fuelBurnLph + ' lph is significantly above your ' + maxFuelBurn + ' lph limit');
+          }
+        }
+      } else {
+        score += 7; // neutral
+      }
+
+      // ===== RUNNING COSTS (+8) =====
+      const midAnnual = (ac.annualCostMin + ac.annualCostMax) / 2;
+      if (annualBudget >= 999999) {
+        score += 8;
+      } else if (midAnnual <= annualBudget) {
+        score += 8;
+        if (midAnnual <= annualBudget * 0.7) {
+          whyFits.push('Running costs well within your annual budget');
+        }
+      } else if (ac.annualCostMin <= annualBudget) {
+        score += 4;
+        considerations.push('Annual running costs (£' + ac.annualCostMin.toLocaleString() + '–£' + ac.annualCostMax.toLocaleString() + ') may push your budget');
+      } else {
+        score -= 3;
+        considerations.push('Typical annual costs of £' + ac.annualCostMin.toLocaleString() + '–£' + ac.annualCostMax.toLocaleString() + ' exceed your budget');
+      }
+
+      // ===== SPEED (+5) =====
+      if (!speedNoPref && minSpeed > 0) {
+        if (ac.cruiseKt >= minSpeed) {
+          score += 5;
+          if (ac.cruiseKt >= minSpeed + 20) {
+            whyFits.push('Cruises at ' + ac.cruiseKt + ' kt — well above your ' + minSpeed + ' kt preference');
+          }
+        } else {
+          const diff = minSpeed - ac.cruiseKt;
+          if (diff <= 15) score += 2;
+          else considerations.push('Cruise speed of ' + ac.cruiseKt + ' kt is below your ' + minSpeed + ' kt preference');
+        }
+      } else {
+        score += 3;
+      }
+
+      // ===== RUNWAY (+5) =====
+      if (runway === 'any') {
+        score += 5;
+      } else if (runway === 'short') {
+        if (ac.runwayM <= 500 && ac.grassStrip) {
+          score += 5;
+          whyFits.push('Handles short grass strips well (' + ac.runwayM + 'm runway requirement)');
+        } else if (ac.runwayM <= 500) {
+          score += 3;
+        } else {
+          considerations.push('Needs ' + ac.runwayM + 'm of runway — may be tight for short strips');
+        }
+      } else if (runway === 'standard') {
+        if (ac.runwayM <= 800) {
+          score += 5;
+        } else {
+          score += 2;
+        }
+      } else {
+        score += 5;
+      }
+
+      // ===== MUST-HAVES (+2 each, max 12; -5 each not met) =====
+      let mustHaveScore = 0;
+      mustHaves.forEach(mh => {
+        const met = checkFeature(ac, mh);
+        if (met) {
+          mustHaveScore += 2;
+        } else {
+          score -= 5;
+          const featureLabel = getFeatureLabel(mh);
+          considerations.push('Does not have: ' + featureLabel);
+        }
+      });
+      score += Math.min(mustHaveScore, 12);
+
+      // ===== NICE-TO-HAVES (+1 each, max 10) =====
+      let nthScore = 0;
+      niceToHaves.forEach(nth => {
+        if (checkFeature(ac, nth)) {
+          nthScore += 1;
+        }
+      });
+      score += Math.min(nthScore, 10);
+
+      // ===== PAYLOAD bonus =====
+      if (payload === 'touring' && ac.usefulLoadKg >= 370) {
+        whyFits.push('Good useful load (' + ac.usefulLoadKg + ' kg) for touring luggage');
+      } else if (payload === 'heavy' && ac.usefulLoadKg >= 430) {
+        whyFits.push('Excellent payload capacity at ' + ac.usefulLoadKg + ' kg useful load');
+      } else if (payload === 'heavy' && ac.usefulLoadKg < 350) {
+        considerations.push('Limited useful load (' + ac.usefulLoadKg + ' kg) may be tight for heavy payloads');
+        score -= 3;
+      }
+
+      // ===== UK AVAILABILITY bonus =====
+      if (ac.ukAvailability === 'Common') {
+        whyFits.push('Commonly available on the UK market — plenty of choice');
+      } else if (ac.ukAvailability === 'Rare') {
+        considerations.push('Rare on the UK market — patience may be needed to find the right one');
+      }
+
+      // Normalize
+      const pct = Math.max(0, Math.min(100, Math.round(score)));
+
+      if (pct >= 40) {
+        results.push({ aircraft: ac, score: pct, whyFits, considerations });
+      }
+    });
+
+    // Sort
+    results.sort((a, b) => b.score - a.score);
+
+    // Render
+    renderResults(results);
+    btn.classList.remove('loading');
+  }, 600);
+}
+
+function checkFeature(ac, feature) {
+  switch(feature) {
+    case 'glass': return ac.glassAvailable;
+    case 'autopilot': return ac.ifrCapable; // proxy
+    case 'gps': return true; // most aircraft can be fitted
+    case 'ifr_avionics': return ac.ifrCapable;
+    case 'retractable': return !ac.fixedGear;
+    case 'csp': return !ac.fixedPitch;
+    case 'low_wing': return ac.wing === 'low';
+    case 'high_wing': return ac.wing === 'high';
+    case 'tricycle': return ac.gear === 'tricycle';
+    case 'tailwheel': return ac.gear === 'tailwheel';
+    case 'adsb': return true; // can be retrofitted
+    case 'parts_uk': return ac.partsAvailability;
+    case 'community_uk': return ac.ukCommunity;
+    case 'composite': return ac.composite;
+    case 'stol': return ac.stolCapable;
+    case 'aerobatic': return ac.aerobatic;
+    case 'grass_friendly': return ac.grassStrip;
+    case 'heating': return true;
+    case 'electric_trim': return ac.ifrCapable;
+    case 'recent_paint': return ac.priceMax >= 80000;
+    case 'resale': return ac.resaleStrength === 'Strong';
+    case 'low_insurance': return ac.insuranceBand === 'Low';
+    case 'quiet': return ac.quietCabin;
+    default: return false;
+  }
+}
+
+function getFeatureLabel(feature) {
+  const labels = {
+    glass: 'Glass cockpit',
+    autopilot: 'Autopilot',
+    gps: 'GPS with moving map',
+    ifr_avionics: 'IFR-certified avionics',
+    retractable: 'Retractable undercarriage',
+    csp: 'Constant-speed propeller',
+    low_wing: 'Low wing configuration',
+    high_wing: 'High wing configuration',
+    tricycle: 'Tricycle gear',
+    tailwheel: 'Tailwheel / conventional gear',
+    adsb: 'ADS-B Out',
+    parts_uk: 'Good UK parts availability',
+    community_uk: 'Active UK type community'
+  };
+  return labels[feature] || feature;
+}
+
+function renderResults(results) {
+  const section = document.getElementById('resultsSection');
+  const header = document.getElementById('resultsHeader');
+  const list = document.getElementById('resultsList');
+  const cta = document.getElementById('ctaCard');
+
+  list.innerHTML = '';
+
+  if (results.length === 0) {
+    header.innerHTML = `
+      <h2>Your Aircraft Matches</h2>
+      <div class="section-sep"></div>
+    `;
+    list.innerHTML = `
+      <div class="no-results">
+        <h3>No strong matches found</h3>
+        <p>Your requirements are quite specific. Try relaxing your budget, range, or must-have features to see more options.</p>
+      </div>
+    `;
+    cta.style.display = 'none';
+    section.classList.add('visible');
+    section.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  header.innerHTML = `
+    <h2>Your Aircraft Matches</h2>
+    <p>Based on your requirements, here are the aircraft types we recommend — ranked by how well they fit your brief.</p>
+    <span class="results-count">${results.length} aircraft matched out of ${aircraftDB.length} in our database</span>
+  `;
+
+  results.forEach((r, i) => {
+    const ac = r.aircraft;
+    const scoreClass = r.score >= 85 ? 'match-green' : r.score >= 60 ? 'match-amber' : 'match-red';
+    const delay = i * 80;
+
+    // Ensure minimum bullets
+    if (r.whyFits.length === 0) {
+      r.whyFits.push(ac.category + ' with ' + ac.seats + ' seats');
+    }
+    if (r.whyFits.length < 2) {
+      r.whyFits.push('Cruises at ' + ac.cruiseKt + ' kt with ' + ac.rangeNm + ' nm range');
+    }
+
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.style.animationDelay = delay + 'ms';
+
+    card.innerHTML = `
+      <div class="result-card-top">
+        <div>
+          <div class="result-name">${ac.name}</div>
+          <span class="result-category">${ac.category}</span>
+        </div>
+        <span class="match-badge ${scoreClass}" data-target="${r.score}">0% Match</span>
+      </div>
+      <div class="specs-row">
+        <span class="spec-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <strong>${ac.seats}</strong> seats
+        </span>
+        <span class="spec-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg>
+          <strong>${ac.rangeNm}</strong> nm
+        </span>
+        <span class="spec-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <strong>${ac.cruiseKt}</strong> kt
+        </span>
+        <span class="spec-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+          <strong>${ac.fuelBurnLph}</strong> lph
+        </span>
+        <span class="spec-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <strong>£${(ac.priceMin/1000).toFixed(0)}k – £${(ac.priceMax/1000).toFixed(0)}k</strong>
+        </span>
+      </div>
+      <div class="fit-section">
+        <div class="fit-title green">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Why It Fits
+        </div>
+        <ul class="fit-list green-list">
+          ${r.whyFits.map(f => '<li>' + f + '</li>').join('')}
+        </ul>
+      </div>
+      ${r.considerations.length > 0 ? `
+      <div class="fit-section">
+        <div class="fit-title amber">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Considerations
+        </div>
+        <ul class="fit-list amber-list">
+          ${r.considerations.map(c => '<li>' + c + '</li>').join('')}
+        </ul>
+      </div>
+      ` : ''}
+      <button class="learn-more-btn" onclick="toggleDetails(this)">
+        <span>Learn More</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="learn-more-content">
+        <div class="details-grid">
+          <div class="detail-item"><span class="detail-label">Engine</span><span class="detail-value">${ac.engine}</span></div>
+          <div class="detail-item"><span class="detail-label">Useful Load</span><span class="detail-value">${ac.usefulLoadKg} kg</span></div>
+          <div class="detail-item"><span class="detail-label">Fuel Capacity</span><span class="detail-value">${ac.fuelCapacityL} litres</span></div>
+          <div class="detail-item"><span class="detail-label">Runway Required</span><span class="detail-value">${ac.runwayM} m</span></div>
+          <div class="detail-item"><span class="detail-label">Annual Costs Est.</span><span class="detail-value">£${ac.annualCostMin.toLocaleString()} – £${ac.annualCostMax.toLocaleString()}</span></div>
+          <div class="detail-item"><span class="detail-label">UK Availability</span><span class="detail-value">${ac.ukAvailability}</span></div>
+          <div class="detail-item"><span class="detail-label">Insurance Band</span><span class="detail-value">${ac.insuranceBand}</span></div>
+          <div class="detail-item"><span class="detail-label">Wing</span><span class="detail-value">${ac.wing === 'high' ? 'High wing' : 'Low wing'}</span></div>
+        </div>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.75rem;"><strong style="color:var(--text);">Maintenance:</strong> ${ac.maintenanceNotes}</p>
+        <div class="broker-tip">
+          <strong>Tip from Atlantic Aircraft:</strong> ${ac.brokerTip}
+        </div>
+      </div>
+    `;
+
+    list.appendChild(card);
+  });
+
+  cta.style.display = 'block';
+  section.classList.add('visible');
+
+  // Scroll
+  setTimeout(() => {
+    section.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+
+  // Animate score counters
+  setTimeout(() => {
+    document.querySelectorAll('.match-badge[data-target]').forEach(badge => {
+      const target = parseInt(badge.dataset.target);
+      let current = 0;
+      const step = Math.max(1, Math.floor(target / 30));
+      const interval = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(interval);
+        }
+        badge.textContent = current + '% Match';
+      }, 20);
+    });
+  }, 300);
+}
+
+function toggleDetails(btn) {
+  const content = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  content.classList.toggle('visible');
+  if (btn.classList.contains('open')) {
+    btn.querySelector('span').textContent = 'Show Less';
+  } else {
+    btn.querySelector('span').textContent = 'Learn More';
+  }
+}
+</script>
+</body>
+</html>
