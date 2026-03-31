@@ -1038,6 +1038,143 @@ input[type="range"]::-moz-range-thumb {
 .back-to-top:hover {
   background: var(--accent-light);
 }
+/* Live Listings */
+.live-listings-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.live-listings-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: linear-gradient(135deg, #1e3a5f, #2d5a8e);
+  color: #ffffff;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.live-listings-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
+}
+
+.live-listings-btn.open {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.live-pulse {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+}
+
+.live-listings-panel {
+  display: none;
+  padding: 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.live-listings-panel.visible {
+  display: block;
+  animation: fadeSlideIn 300ms ease-out;
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.live-listings-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.listing-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.5rem;
+}
+
+.listing-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 0.82rem;
+}
+
+.listing-link:hover {
+  border-color: var(--accent);
+  background: var(--accent-light, rgba(59,130,196,0.06));
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(30,58,95,0.1);
+}
+
+.listing-link svg {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.listing-site {
+  font-weight: 600;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .listing-site {
+  color: var(--accent);
+}
+
+.listing-label {
+  color: var(--text-muted);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.live-listings-note {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  opacity: 0.7;
+}
+
+@media (max-width: 640px) {
+  .listing-links {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .live-listings-section { display: none; }
+}
+
 </style>
 </head>
 <body>
@@ -1435,7 +1572,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["training", "weekend"],
     maintenanceNotes: "Very cheap to maintain. Parts everywhere. Simple fixed-gear design.",
-    brokerTip: "The best value entry into aircraft ownership. Perfect for hour building and PPL training. Look for post-2000 152s with recent engine work — they hold value well."
+    brokerTip: "The best value entry into aircraft ownership. Perfect for hour building and PPL training. Look for post-2000 152s with recent engine work — they hold value well.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=C150&grp=Cessna+150+%2F+152", label: "Cessna 150/152 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/cessna/", label: "Cessna listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=CESSNA&Mdl=150", label: "Cessna 150 listings" }
+    ]
   },
   {
     name: "Piper PA-28-140 Cherokee",
@@ -1470,7 +1613,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["training", "weekend", "touring_uk"],
     maintenanceNotes: "Affordable and well-understood. 160HP STC models are more capable. Huge parts network.",
-    brokerTip: "The affordable way into 4-seat ownership. Many have been upgraded to 160HP which makes a real difference. Check for corrosion on the wing spar — a known Cherokee issue that's manageable if caught early."
+    brokerTip: "The affordable way into 4-seat ownership. Many have been upgraded to 160HP which makes a real difference. Check for corrosion on the wing spar — a known Cherokee issue that's manageable if caught early.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=PA28&grp=Piper+PA28", label: "Piper PA-28 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/piper/", label: "Piper listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=PIPER&Mdl=PA-28", label: "Piper PA-28 listings" }
+    ]
   },
   {
     name: "Piper PA-28-161 Warrior II",
@@ -1505,7 +1654,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["training", "weekend", "touring_uk", "syndicate"],
     maintenanceNotes: "One of the most popular trainers in the UK. Simple and reliable. Excellent parts and engineer support.",
-    brokerTip: "The UK's most popular training and syndicate aircraft for good reason. Forgiving to fly, cheap to insure, and holds its value. Look for examples with GTN 650 or G5 avionics — they command a premium but buyers love them."
+    brokerTip: "The UK's most popular training and syndicate aircraft for good reason. Forgiving to fly, cheap to insure, and holds its value. Look for examples with GTN 650 or G5 avionics — they command a premium but buyers love them.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=PA28&grp=Piper+PA28", label: "Piper PA-28 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/piper/", label: "Piper listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=PIPER&Mdl=PA-28", label: "Piper PA-28 listings" }
+    ]
   },
   {
     name: "Piper PA-28-180 Cherokee",
@@ -1540,7 +1695,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["weekend", "touring_uk", "syndicate"],
     maintenanceNotes: "The 180HP gives genuinely useful 4-seat performance. Same cheap maintenance as all PA-28s.",
-    brokerTip: "The sweet spot for a proper 4-seat tourer on a budget. Unlike the 140/160, the 180 can genuinely carry 4 adults and bags. Great value compared to the Archer II."
+    brokerTip: "The sweet spot for a proper 4-seat tourer on a budget. Unlike the 140/160, the 180 can genuinely carry 4 adults and bags. Great value compared to the Archer II.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=PA28&grp=Piper+PA28", label: "Piper PA-28 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/piper/", label: "Piper listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=PIPER&Mdl=PA-28", label: "Piper PA-28 listings" }
+    ]
   },
   {
     name: "Piper PA-28-181 Archer II/III",
@@ -1575,7 +1736,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["weekend", "touring_uk", "touring_europe", "syndicate"],
     maintenanceNotes: "Very similar running costs to the Warrior. Semi-tapered wing gives better cruise performance.",
-    brokerTip: "The refined PA-28. Better climb and cruise than the Warrior with the same running costs. Archer IIIs (1994+) have the updated interior and are worth the premium if budget allows."
+    brokerTip: "The refined PA-28. Better climb and cruise than the Warrior with the same running costs. Archer IIIs (1994+) have the updated interior and are worth the premium if budget allows.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=PA28&grp=Piper+PA28", label: "Piper PA-28 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/piper/", label: "Piper listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=PIPER&Mdl=PA-28", label: "Piper PA-28 listings" }
+    ]
   },
   {
     name: "Piper PA-28R Arrow",
@@ -1610,7 +1777,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["touring_uk", "touring_europe"],
     maintenanceNotes: "Retractable gear adds maintenance complexity and cost. Gear inspections are critical. Higher insurance than fixed-gear PA-28s.",
-    brokerTip: "Significantly faster than fixed-gear PA-28s. The retractable gear and constant-speed prop make it a proper cross-country machine. Great for someone stepping up from a Warrior/Archer who wants more speed."
+    brokerTip: "Significantly faster than fixed-gear PA-28s. The retractable gear and constant-speed prop make it a proper cross-country machine. Great for someone stepping up from a Warrior/Archer who wants more speed.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=P28R&grp=Piper+PA-28R+Arrow", label: "Piper Arrow listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/piper/", label: "Piper listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=PIPER&Mdl=PA-28R", label: "Piper PA-28R listings" }
+    ]
   },
   {
     name: "Cessna 172 Skyhawk",
@@ -1645,7 +1818,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["training", "weekend", "touring_uk", "syndicate"],
     maintenanceNotes: "The world's most popular single. Parts are everywhere. Any engineer can work on it.",
-    brokerTip: "The gold standard for a reason. High wing gives great visibility for sightseeing. Later models (172N, 172P) are the sweet spot for value. 172S models command a premium but come with better avionics."
+    brokerTip: "The gold standard for a reason. High wing gives great visibility for sightseeing. Later models (172N, 172P) are the sweet spot for value. 172S models command a premium but come with better avionics.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=C172&grp=Cessna+172+%2F+Skyhawk", label: "Cessna 172 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/cessna/", label: "Cessna listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=CESSNA&Mdl=172", label: "Cessna 172 listings" }
+    ]
   },
   {
     name: "Cessna 182 Skylane",
@@ -1680,7 +1859,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["touring_uk", "touring_europe", "syndicate"],
     maintenanceNotes: "Constant-speed prop adds maintenance cost over a 172. Bigger engine burns more fuel. Robust and forgiving.",
-    brokerTip: "The step up from a 172 for serious tourers. Carries 4 adults with full bags and fuel — the 172 struggles with that. Brilliant into short strips thanks to the power. Worth every penny of the premium over a 172 if you actually travel."
+    brokerTip: "The step up from a 172 for serious tourers. Carries 4 adults with full bags and fuel — the 172 struggles with that. Brilliant into short strips thanks to the power. Worth every penny of the premium over a 172 if you actually travel.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=C182&grp=Cessna+182+%2F+Skylane", label: "Cessna 182 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/cessna/", label: "Cessna listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=CESSNA&Mdl=182", label: "Cessna 182 listings" }
+    ]
   },
   {
     name: "Diamond DA40 Star",
@@ -1715,7 +1900,13 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["touring_uk", "touring_europe", "training"],
     maintenanceNotes: "Composite airframe is low maintenance but needs specialist repair if damaged. G1000 panel is standard. Fuel efficient.",
-    brokerTip: "The modern choice. G1000 glass cockpit as standard, excellent fuel efficiency, and the composite airframe is slippery and strong. UK parts can take longer than Cessna/Piper but Diamond's support is improving. Best-in-class safety record."
+    brokerTip: "The modern choice. G1000 glass cockpit as standard, excellent fuel efficiency, and the composite airframe is slippery and strong. UK parts can take longer than Cessna/Piper but Diamond's support is improving. Best-in-class safety record.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=DA40&grp=Diamond+DA40+Star", label: "Diamond DA40 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/diamond/", label: "Diamond listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=DIAMOND&Mdl=DA40", label: "Diamond DA40 listings" }
+    ]
   },
   {
     name: "Diamond DA42 Twin Star",
@@ -1750,7 +1941,13 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["touring_europe", "commercial"],
     maintenanceNotes: "Diesel engines run on Jet-A1, much cheaper than Avgas. Higher maintenance costs but lower fuel bills. Twin-engine insurance premiums are significant.",
-    brokerTip: "The only light twin that makes economic sense for a private owner. Jet-A1 fuel is half the price of Avgas, and the fuel burn is remarkably low for a twin. Diesel engine maintenance is specialist — make sure you have a nearby approved shop."
+    brokerTip: "The only light twin that makes economic sense for a private owner. Jet-A1 fuel is half the price of Avgas, and the fuel burn is remarkably low for a twin. Diesel engine maintenance is specialist — make sure you have a nearby approved shop.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=DA42&grp=Diamond+DA42+Twin+Star", label: "Diamond DA42 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/diamond/", label: "Diamond listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=DIAMOND&Mdl=DA42", label: "Diamond DA42 listings" }
+    ]
   },
   {
     name: "Grumman AA-5 Traveler/Tiger",
@@ -1785,7 +1982,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["weekend", "touring_uk"],
     maintenanceNotes: "Bonded aluminium construction — specialist repair needed if damaged. Sliding canopy is distinctive. Fast for the horsepower.",
-    brokerTip: "A hidden gem. Faster than a PA-28 or 172 on similar fuel burn thanks to the clean aerodynamics. The sliding canopy and sporty feel make it a joy to fly. The Tiger (180HP) version is the one to have. Parts can take longer to source than Cessna/Piper."
+    brokerTip: "A hidden gem. Faster than a PA-28 or 172 on similar fuel burn thanks to the clean aerodynamics. The sliding canopy and sporty feel make it a joy to fly. The Tiger (180HP) version is the one to have. Parts can take longer to source than Cessna/Piper.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=AA5&grp=Grumman+AA-5", label: "Grumman AA-5 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/grumman/", label: "Grumman listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=GRUMMAN&Mdl=AA-5", label: "Grumman AA-5 listings" }
+    ]
   },
   {
     name: "Robin DR400",
@@ -1820,7 +2023,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["weekend", "touring_uk", "syndicate"],
     maintenanceNotes: "Wood-and-fabric wing construction is unusual — needs specialist inspection. French-built, so some parts come from France. Wonderful handling.",
-    brokerTip: "A French classic loved by UK clubs. The cranked wing gives outstanding short-field performance and the bubble canopy means incredible visibility. The 180HP Regent is the most popular model. Make sure the wing structure inspection is up to date."
+    brokerTip: "A French classic loved by UK clubs. The cranked wing gives outstanding short-field performance and the bubble canopy means incredible visibility. The 180HP Regent is the most popular model. Make sure the wing structure inspection is up to date.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=DR40&grp=Robin+DR-400", label: "Robin DR400 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/robin/", label: "Robin listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=ROBIN&Mdl=DR400", label: "Robin DR400 listings" }
+    ]
   },
   {
     name: "Socata TB10 Tobago",
@@ -1855,7 +2064,13 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["touring_uk", "touring_europe"],
     maintenanceNotes: "French-built. Well-engineered but parts come from Daher in France. Spacious cabin for the class.",
-    brokerTip: "One of the most comfortable 4-seaters in the class — the cabin is wider than a PA-28 and very quiet. The TB20 Trinidad (retractable, 250HP) is the step-up model for serious tourers. Undervalued in the UK market."
+    brokerTip: "One of the most comfortable 4-seaters in the class — the cabin is wider than a PA-28 and very quiet. The TB20 Trinidad (retractable, 250HP) is the step-up model for serious tourers. Undervalued in the UK market.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=TB10&grp=Socata+TB-10+Tobago", label: "Socata TB10 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/daher/", label: "Daher/Socata listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=SOCATA&Mdl=TB-10", label: "Socata TB-10 listings" }
+    ]
   },
   {
     name: "Socata TB20 Trinidad",
@@ -1890,7 +2105,13 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["touring_uk", "touring_europe"],
     maintenanceNotes: "Complex aircraft — retractable gear plus constant-speed prop. Higher insurance. Needs specialist Socata knowledge.",
-    brokerTip: "A genuine 140+ knot cruiser with a huge cabin. Often compared to the Mooney and Bonanza but more spacious inside. Rare in the UK which can make parts slower, but the Socata/TB community is tight-knit and helpful."
+    brokerTip: "A genuine 140+ knot cruiser with a huge cabin. Often compared to the Mooney and Bonanza but more spacious inside. Rare in the UK which can make parts slower, but the Socata/TB community is tight-knit and helpful.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=TB20&grp=Socata+TB-20+Trinidad", label: "Socata TB20 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/daher/", label: "Daher/Socata listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=SOCATA&Mdl=TB-20", label: "Socata TB-20 listings" }
+    ]
   },
   {
     name: "Cessna 150 Aerobat",
@@ -1925,7 +2146,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["training", "aerobatics"],
     maintenanceNotes: "Same as standard 150/152 but with aerobatic harnesses and stronger structure. Check for aerobatic fatigue history.",
-    brokerTip: "If you want aerobatics on a budget, this is the entry point. Limited to basic positive-G manoeuvres but perfect for learning spins, loops, and rolls. Very affordable to run."
+    brokerTip: "If you want aerobatics on a budget, this is the entry point. Limited to basic positive-G manoeuvres but perfect for learning spins, loops, and rolls. Very affordable to run.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=C150&grp=Cessna+150+%2F+152", label: "Cessna 150 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/cessna/", label: "Cessna listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=CESSNA&Mdl=150", label: "Cessna 150 Aerobat listings" }
+    ]
   },
   {
     name: "Piper PA-38 Tomahawk",
@@ -1960,7 +2187,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["training", "weekend"],
     maintenanceNotes: "Very simple and cheap to maintain. Good trainer characteristics. T-tail design is distinctive.",
-    brokerTip: "The cheapest way to own a light aircraft in the UK. Basic but honest. The T-tail means it handles differently in crosswinds — some love it, some don't. Great for hour building and PPL maintenance."
+    brokerTip: "The cheapest way to own a light aircraft in the UK. Basic but honest. The T-tail means it handles differently in crosswinds — some love it, some don't. Great for hour building and PPL maintenance.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=PA38&grp=Piper+PA-38+Tomahawk", label: "Piper PA-38 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/piper/", label: "Piper listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=PIPER&Mdl=PA-38", label: "Piper PA-38 listings" }
+    ]
   },
   {
     name: "Beagle Pup",
@@ -1995,7 +2228,11 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["weekend", "aerobatics"],
     maintenanceNotes: "British-built classic. Parts are specialist but the Beagle Pup Club is excellent. Beautiful aircraft to fly.",
-    brokerTip: "A piece of British aviation heritage that's also a genuinely lovely aircraft to fly. The Pup 150 is mildly aerobatic. Values have been climbing steadily — they're becoming collector's items while still being practical weekend flyers."
+    brokerTip: "A piece of British aviation heritage that's also a genuinely lovely aircraft to fly. The Pup 150 is mildly aerobatic. Values have been climbing steadily — they're becoming collector's items while still being practical weekend flyers.",
+    searchLinks: [
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=BEAGLE&des=&grp=", label: "Beagle aircraft search" }
+    ]
   },
   {
     name: "Mooney M20J",
@@ -2030,7 +2267,13 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["touring_uk", "touring_europe"],
     maintenanceNotes: "Complex aircraft. Manual gear operation is unique to Mooney. Specialist maintenance advisable. Very efficient for the speed.",
-    brokerTip: "The fastest single you can buy for 200HP. Mooneys are slippery, efficient, and make 150+ knots look easy. The cabin is tight though — not ideal if you're tall. UK support is limited so factor in specialist maintenance travel."
+    brokerTip: "The fastest single you can buy for 200HP. Mooneys are slippery, efficient, and make 150+ knots look easy. The cabin is tight though — not ideal if you're tall. UK support is limited so factor in specialist maintenance travel.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=M20&grp=Mooney+M20", label: "Mooney M20 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/mooney/", label: "Mooney listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=MOONEY&Mdl=M20", label: "Mooney M20 listings" }
+    ]
   },
   {
     name: "Cirrus SR20",
@@ -2065,7 +2308,13 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["touring_uk", "touring_europe"],
     maintenanceNotes: "Composite airframe — specialist repair only. CAPS parachute needs periodic repacking (expensive). Avidyne or Garmin Perspective glass cockpit.",
-    brokerTip: "The aircraft that modernised GA. The CAPS whole-airframe parachute is a genuine safety differentiator. Glass cockpit as standard. Not suitable for grass strips due to the fixed gear design and composite construction. Premium pricing but strong resale."
+    brokerTip: "The aircraft that modernised GA. The CAPS whole-airframe parachute is a genuine safety differentiator. Glass cockpit as standard. Not suitable for grass strips due to the fixed gear design and composite construction. Premium pricing but strong resale.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=SR20&grp=Cirrus+SR20", label: "Cirrus SR20 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/cirrus/", label: "Cirrus listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=CIRRUS&Mdl=SR20", label: "Cirrus SR20 listings" }
+    ]
   },
   {
     name: "Cirrus SR22",
@@ -2100,7 +2349,13 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["touring_europe", "commercial"],
     maintenanceNotes: "Higher engine and airframe costs than SR20. CAPS repack is c. £15k every 10 years. Continental IO-550 is a strong but thirsty engine.",
-    brokerTip: "The best-selling piston single in the world for a reason. 165 knots, CAPS parachute, full glass cockpit — it's the closest thing to an airliner experience in a piston single. Budget carefully for running costs though — this is not a cheap aircraft to operate."
+    brokerTip: "The best-selling piston single in the world for a reason. 165 knots, CAPS parachute, full glass cockpit — it's the closest thing to an airliner experience in a piston single. Budget carefully for running costs though — this is not a cheap aircraft to operate.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=SR22&grp=Cirrus+SR22", label: "Cirrus SR22 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/cirrus/", label: "Cirrus listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=CIRRUS&Mdl=SR22", label: "Cirrus SR22 listings" }
+    ]
   },
   {
     name: "Cessna 177 Cardinal",
@@ -2135,7 +2390,13 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["touring_uk", "weekend"],
     maintenanceNotes: "Essentially a more refined 172. No wing struts means better visibility. Cantilever wing design is clean.",
-    brokerTip: "The 'better 172' that Cessna built. No wing struts means stunning visibility from both seats. Wider cabin than the 172. A bit of a cult following which keeps values strong. The 177RG retractable version is faster but more complex."
+    brokerTip: "The 'better 172' that Cessna built. No wing struts means stunning visibility from both seats. Wider cabin than the 172. A bit of a cult following which keeps values strong. The 177RG retractable version is faster but more complex.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=C177&grp=Cessna+177+Cardinal", label: "Cessna 177 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/cessna/", label: "Cessna listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=CESSNA&Mdl=177", label: "Cessna 177 listings" }
+    ]
   },
   {
     name: "Beechcraft Musketeer/Sundowner",
@@ -2170,7 +2431,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["weekend", "touring_uk"],
     maintenanceNotes: "Well-built Beechcraft quality. Parts are pricier than Cessna/Piper. Not as many UK engineers familiar with the type.",
-    brokerTip: "Beechcraft build quality in a PA-28 price bracket. The Sundowner (C23) is the most common and capable variant. Often overlooked in favour of Pipers and Cessnas, which means you can find good value. Make sure you have a Beech-familiar engineer nearby."
+    brokerTip: "Beechcraft build quality in a PA-28 price bracket. The Sundowner (C23) is the most common and capable variant. Often overlooked in favour of Pipers and Cessnas, which means you can find good value. Make sure you have a Beech-familiar engineer nearby.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=BE23&grp=Beech+23+Musketeer", label: "Beechcraft Musketeer listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/beechcraft/", label: "Beechcraft listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=BEECHCRAFT&Mdl=23", label: "Beechcraft Musketeer listings" }
+    ]
   },
   {
     name: "Piper PA-32 Cherokee Six / Saratoga",
@@ -2205,7 +2472,13 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["touring_uk", "touring_europe", "syndicate"],
     maintenanceNotes: "Big engine means higher maintenance and fuel costs. Very capable load carrier. Constant-speed prop standard.",
-    brokerTip: "The workhorse of GA. If you regularly fly with 4+ people and bags, nothing else at this price carries the load. The fixed-gear Cherokee Six is simpler and cheaper than the retractable Saratoga. Excellent syndicate aircraft — split costs 3-4 ways and it becomes very affordable per head."
+    brokerTip: "The workhorse of GA. If you regularly fly with 4+ people and bags, nothing else at this price carries the load. The fixed-gear Cherokee Six is simpler and cheaper than the retractable Saratoga. Excellent syndicate aircraft — split costs 3-4 ways and it becomes very affordable per head.",
+    searchLinks: [
+      { site: "PlaneCheck", url: "https://www.planecheck.com/aspsel2.asp?man=&des=PA32&grp=Piper+PA32+Cherokee+Six", label: "Piper PA-32 listings" },
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/piper/", label: "Piper listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=PIPER&Mdl=PA-32", label: "Piper PA-32 listings" }
+    ]
   },
   {
     name: "Tecnam P2002 Sierra",
@@ -2240,7 +2513,12 @@ const aircraftDB = [
     quietCabin: true,
     primaryUse: ["training", "weekend"],
     maintenanceNotes: "Rotax engine is very different from Lycomings — needs Rotax-trained engineer. Very low fuel burn. Modern and simple.",
-    brokerTip: "The modern way to fly cheaply. Rotax engine sips fuel at 18 litres/hour. Can operate as a microlight or EASA aircraft depending on registration. Perfect for someone who wants modern, efficient flying without the costs of a traditional 4-seater."
+    brokerTip: "The modern way to fly cheaply. Rotax engine sips fuel at 18 litres/hour. Can operate as a microlight or EASA aircraft depending on registration. Perfect for someone who wants modern, efficient flying without the costs of a traditional 4-seater.",
+    searchLinks: [
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/tecnam/", label: "Tecnam listings" },
+      { site: "Controller", url: "https://www.controller.com/listings/aircraft/for-sale/list?Mfr=TECNAM&Mdl=P2002", label: "Tecnam P2002 listings" }
+    ]
   },
   {
     name: "Vans RV-7/RV-9",
@@ -2275,7 +2553,11 @@ const aircraftDB = [
     quietCabin: false,
     primaryUse: ["weekend", "touring_uk", "touring_europe", "aerobatics"],
     maintenanceNotes: "Kit-built (Permit to Fly, not C of A). Owner maintenance allowed. Very efficient and fast. Aluminium construction.",
-    brokerTip: "The performance bargain of GA. 150 knots on 28 litres/hour is extraordinary value. These are kit-built so quality varies — a thorough inspection is essential. The RV-7 is aerobatic, the RV-9 is the stable touring version. Operate on a Permit to Fly so can't be used commercially."
+    brokerTip: "The performance bargain of GA. 150 knots on 28 litres/hour is extraordinary value. These are kit-built so quality varies — a thorough inspection is essential. The RV-7 is aerobatic, the RV-9 is the stable touring version. Operate on a Permit to Fly so can't be used commercially.",
+    searchLinks: [
+      { site: "AFORS", url: "https://afors.uk/light-aircraft/for-sale", label: "UK aircraft for sale" },
+      { site: "AvPay", url: "https://avpay.aero/aircraft-for-sale/", label: "Aircraft for sale" }
+    ]
   }
 ];
 
@@ -2836,6 +3118,26 @@ function renderResults(results) {
         <div class="broker-tip">
           <strong>Tip from Atlantic Aircraft:</strong> ${ac.brokerTip}
         </div>
+        <div class="live-listings-section">
+          <button class="live-listings-btn" onclick="toggleListings(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span>Search Live Listings</span>
+            <span class="live-pulse"></span>
+          </button>
+          <div class="live-listings-panel">
+            <p class="live-listings-desc">These links search UK and European aircraft listing sites in real time — results are always current.</p>
+            <div class="listing-links">
+              ${ac.searchLinks.map(link => `
+                <a href="${link.url}" target="_blank" rel="noopener" class="listing-link">
+                  <span class="listing-site">${link.site}</span>
+                  <span class="listing-label">${link.label}</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              `).join('')}
+            </div>
+            <p class="live-listings-note">Listings are hosted on third-party sites. Atlantic Aircraft is not responsible for their content or accuracy.</p>
+          </div>
+        </div>
       </div>
     `;
 
@@ -2866,6 +3168,12 @@ function renderResults(results) {
       }, 20);
     });
   }, 300);
+}
+
+function toggleListings(btn) {
+  const panel = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  panel.classList.toggle('visible');
 }
 
 function toggleDetails(btn) {
